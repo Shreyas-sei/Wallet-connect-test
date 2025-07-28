@@ -4,20 +4,43 @@ import { WagmiAdapter } from '@reown/appkit-adapter-wagmi';
 import { WagmiProvider } from 'wagmi';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useAccount, useBalance } from 'wagmi';
-import { mainnet, arbitrum, polygon, optimism, base } from '@reown/appkit/networks';
+import { mainnet, arbitrum, polygon, optimism, base, type AppKitNetwork } from '@reown/appkit/networks';
+import type { InferredCaipNetwork } from '@reown/appkit-common'
+
 
 const projectId = 'c1ad19896ae25c0f46a9d4dbee5fbe78';
 const queryClient = new QueryClient();
-const networks = [mainnet, arbitrum, polygon, optimism, base];
+
+
+const sei : InferredCaipNetwork = {
+  id : 1329,
+  chainNamespace : "sei" as const,
+  caipNetworkId : "sei:1329",
+  name : "Sei Mainnet",
+  nativeCurrency : { name : "SEI", symbol: "SEI", decimals: 18 },
+  rpcUrls : {
+    default: {
+      http: ["https://evm-rpc.sei-apis.com"],
+    }
+},
+  blockExplorers : {
+    default: {
+      name: "Sei Explorer",
+      url: "https://seitrace.com",
+    }
+  }
+}
+
+const networks = [mainnet, arbitrum, polygon, optimism, base, sei] as [AppKitNetwork, ...AppKitNetwork[]]
 
 const wagmiAdapter = new WagmiAdapter({
-  networks,
+  networks: networks,
   projectId
 });
 
 createAppKit({
   adapters: [wagmiAdapter],
-  networks : [mainnet, arbitrum, polygon, optimism, base],
+  networks,
   projectId,
   metadata: {
     name: 'SEI Test',
