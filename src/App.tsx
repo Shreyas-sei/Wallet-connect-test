@@ -1,5 +1,4 @@
 import '@sei-js/sei-global-wallet/eip6963';
-import React from 'react';
 import { createAppKit } from '@reown/appkit/react';
 import { WagmiAdapter } from '@reown/appkit-adapter-wagmi';
 import { WagmiProvider } from 'wagmi';
@@ -18,7 +17,7 @@ const wagmiAdapter = new WagmiAdapter({
 
 createAppKit({
   adapters: [wagmiAdapter],
-  networks,
+  networks : [mainnet, arbitrum, polygon, optimism, base],
   projectId,
   metadata: {
     name: 'SEI Test',
